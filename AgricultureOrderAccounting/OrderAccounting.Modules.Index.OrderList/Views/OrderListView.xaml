@@ -1,0 +1,313 @@
+﻿<UserControl x:Class="OrderAccounting.Modules.Index.OrderList.Views.OrderListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:c ="clr-namespace:CalcBinding;assembly=CalcBinding"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:local="clr-namespace:OrderAccounting.Modules.Index.OrderList.Views"
+             dx:ThemeManager.ThemeName="Office2013" Name="wnd">
+
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="local:OrderListView.HideState">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="imageGreen" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0:0.5" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="local:OrderListView.HideType">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="imageBlue" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0:0.5" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="local:OrderListView.ShowFilter">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="blurEffect" Storyboard.TargetProperty="Radius" To="10" Duration="0:0:0:0.3" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="local:OrderListView.HideFilter">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="blurEffect" Storyboard.TargetProperty="Radius" To="0" Duration="0:0:0:0.3" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+        <!--<EventTrigger RoutedEvent="Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="imageGreen" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0:0.5" BeginTime="0:0:0:1" />
+                    <DoubleAnimation Storyboard.TargetName="imageBlue" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0:0.5" BeginTime="0:0:0:1" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>-->
+    </UserControl.Triggers>
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/FMS.UI;component/Views/ModernUIStyles/BrushesDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="{x:Type Button}" >
+                <Setter Property="ToolTipService.ShowOnDisabled" Value="False" />
+                <Setter Property="ToolTipService.IsEnabled" Value="True" />
+
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <ContentPresenter x:Name="ContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" />
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="True">
+                                    <Setter Property="Opacity" TargetName="ContentPresenter" Value="1"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" TargetName="ContentPresenter" Value="0.3"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <DataTemplate x:Key="BasicTemplate">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Border Margin="0 0 10 1" Opacity="0.3" Width="15" Background="#6aa84f" Visibility="{c:Binding Path='TypeId == 0'}" />
+
+                    <Border Margin="0 0 10 1" Opacity="0.3" Width="15" Background="#be7a03" Visibility="{c:Binding Path='TypeId == 1'}" />
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <StackPanel Margin="10 7 5 7">
+                            <GroupBox Header="Дата від" Foreground="{StaticResource ApplicationBrush}" BorderBrush="{StaticResource ApplicationBrush}">
+                                <TextBlock Width="60" Foreground="Black" IsHitTestVisible="False" Text="{Binding DisplayDateFrom}" />
+                            </GroupBox>
+                            <GroupBox Header="Дата до" Foreground="{StaticResource ApplicationBrush}" BorderBrush="{StaticResource ApplicationBrush}">
+                                <TextBlock Width="60" Foreground="Black" IsHitTestVisible="False" Text="{Binding DisplayDateTo}" />
+                            </GroupBox>
+                        </StackPanel>
+                        <StackPanel Margin="5 7 10 7">
+                            <GroupBox Header="Наряд" Foreground="{StaticResource ApplicationBrush}" BorderBrush="{StaticResource ApplicationBrush}">
+                                <TextBlock Margin="5 0" Width="75" Foreground="Black" IsHitTestVisible="False" Text="{Binding Number}" />
+                            </GroupBox>
+                            <GroupBox Header="Майстер наряд" Foreground="{StaticResource ApplicationBrush}" BorderBrush="{StaticResource ApplicationBrush}">
+                                <TextBlock Margin="5 0" Width="75" Foreground="Black" IsHitTestVisible="False" Text="{Binding MasterNumber}" />
+                            </GroupBox>
+                        </StackPanel>
+                        <StackPanel Margin="10 7">
+                            <GroupBox Header="Вид операції" Foreground="{StaticResource ApplicationBrush}" BorderBrush="{StaticResource ApplicationBrush}">
+                                <TextBlock Margin="5 0" Width="180" Foreground="Black" IsHitTestVisible="False" Text="{Binding OperationType}" />
+                            </GroupBox>
+                            <GroupBox Header="Актуальна фаза" Foreground="{StaticResource ApplicationBrush}" BorderBrush="{StaticResource ApplicationBrush}">
+                                <TextBlock Margin="5 0" Width="180" Foreground="Black" IsHitTestVisible="False" Text="{Binding ActualPhase}" />
+                            </GroupBox>
+                        </StackPanel>
+
+                        <StackPanel Margin="10 7">
+                            <GroupBox Header="Базова операція" Foreground="{StaticResource ApplicationBrush}" BorderBrush="{StaticResource ApplicationBrush}">
+                                <TextBlock Margin="5 0" Width="200" Foreground="Black" IsHitTestVisible="False"  Text="{Binding BaseOperation}" />
+                            </GroupBox>
+                            <GroupBox Header="Деталізована операція" Foreground="{StaticResource ApplicationBrush}" BorderBrush="{StaticResource ApplicationBrush}">
+                                <TextBlock Margin="5 0" Width="200" Foreground="Black" IsHitTestVisible="False" Text="{Binding Operation}" />
+                            </GroupBox>
+                        </StackPanel>
+                        <StackPanel Margin="10 7">
+                            <GroupBox Header="Транспорт" Foreground="{StaticResource ApplicationBrush}" BorderBrush="{StaticResource ApplicationBrush}">
+                                <Grid Background="Transparent" ToolTip="{Binding Vehicle}">
+                                    <TextBlock Margin="5 0" Width="240" Foreground="Black" IsHitTestVisible="False" Text="{Binding Vehicle}" />
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox Header="Агрегат" Foreground="{StaticResource ApplicationBrush}" BorderBrush="{StaticResource ApplicationBrush}" Visibility="{c:Binding Path=HasAggregate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <Grid Background="Transparent" ToolTip="{Binding Unit}">
+                                    <TextBlock Margin="5 0" Width="240" Foreground="Black" IsHitTestVisible="False" Text="{Binding Unit}" />
+                                </Grid>
+                            </GroupBox>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
+
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid >
+        <Grid.Effect>
+            <BlurEffect x:Name="blurEffect" Radius="0" />
+        </Grid.Effect>
+
+        <Grid Width="1050" VerticalAlignment="Top" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Center" Name="imageGreen" Opacity="0">
+
+                <Image Width="16" Source="pack://application:,,,/OrderAccounting.Modules.Index.OrderList;component/Images/arrow_green.png" >
+                    <Image.Triggers>
+                        <EventTrigger RoutedEvent="Loaded">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="imageGreen" Storyboard.TargetProperty="Margin" RepeatBehavior="Forever">
+                                        <EasingThicknessKeyFrame KeyTime="0:0:0" Value="0 0 0 0"/>
+                                        <EasingThicknessKeyFrame KeyTime="0:0:1" Value="0 15 0 0">
+                                            <EasingThicknessKeyFrame.EasingFunction>
+                                                <PowerEase Power="1.3" EasingMode="EaseInOut"/>
+                                            </EasingThicknessKeyFrame.EasingFunction>
+                                        </EasingThicknessKeyFrame>
+                                        <EasingThicknessKeyFrame KeyTime="0:0:2" Value="0 0 0 0">
+                                            <EasingThicknessKeyFrame.EasingFunction>
+                                                <PowerEase Power="1.3" EasingMode="EaseInOut"/>
+                                            </EasingThicknessKeyFrame.EasingFunction>
+                                        </EasingThicknessKeyFrame>
+                                    </ThicknessAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Image.Triggers>
+                </Image>
+
+                <TextBlock Margin="10 0" Foreground="{StaticResource GreenSaveBrush}" Text="Оберіть статус наряду" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Center" Name="imageBlue" Opacity="0">
+
+                <TextBlock Margin="10 0" Foreground="DodgerBlue" Text="Оберіть тип операції" />
+
+                <Image Width="16" Source="pack://application:,,,/OrderAccounting.Modules.Index.OrderList;component/Images/arrow_blue.png" >
+                    <Image.Triggers>
+                        <EventTrigger RoutedEvent="Loaded">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="imageBlue" Storyboard.TargetProperty="Margin" RepeatBehavior="Forever">
+                                        <EasingThicknessKeyFrame KeyTime="0:0:0" Value="0 0 0 0"/>
+                                        <EasingThicknessKeyFrame KeyTime="0:0:1" Value="0 15 0 0">
+                                            <EasingThicknessKeyFrame.EasingFunction>
+                                                <PowerEase Power="1.3" EasingMode="EaseInOut"/>
+                                            </EasingThicknessKeyFrame.EasingFunction>
+                                        </EasingThicknessKeyFrame>
+                                        <EasingThicknessKeyFrame KeyTime="0:0:2" Value="0 0 0 0">
+                                            <EasingThicknessKeyFrame.EasingFunction>
+                                                <PowerEase Power="1.3" EasingMode="EaseInOut"/>
+                                            </EasingThicknessKeyFrame.EasingFunction>
+                                        </EasingThicknessKeyFrame>
+                                    </ThicknessAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Image.Triggers>
+                </Image>
+            </StackPanel>
+
+        </Grid>
+
+        <ScrollViewer Width="1050" VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding DisplayDataCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+
+                        <Button Margin="0 0 0 15" Background="White" >
+
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseDoubleClick">
+                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.DetailCommand, ElementName=wnd}" CommandParameter="{Binding Path=.}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+
+                            <Button.Triggers>
+                                <EventTrigger RoutedEvent="Button.MouseEnter">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="ButtonPanel" Storyboard.TargetProperty="Width"
+                                                               Duration="0:0:0.3" To="90" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="Button.MouseLeave">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="ButtonPanel" Storyboard.TargetProperty="Width"
+                                                               Duration="0:0:0.3" To="0" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Button.Triggers>
+
+                            <Grid Background="White">
+                                <Border Opacity="0.5" Name="OrderBorder" BorderBrush="LightGray" BorderThickness="0 1 0 1"/>
+
+                                <ContentControl Content="{Binding Path=.}" ContentTemplate="{StaticResource BasicTemplate}" />
+
+                                <Grid Name="ButtonPanel" Width="0" HorizontalAlignment="Right">
+
+                                    <Border Background="{StaticResource ApplicationBrush}" Opacity="0.5" />
+
+                                    <Button Margin="5 0" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                        ToolTip="Редагувати" Command="{Binding Path=DataContext.EditCommand, ElementName=wnd}" CommandParameter="{Binding Path=.}">
+
+                                        <Button.Triggers>
+                                            <EventTrigger RoutedEvent="Button.MouseEnter">
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ColorAnimation To="#4d80c1" Storyboard.TargetName="editEllipsePanel" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+
+                                                        <ColorAnimation To="White" Storyboard.TargetName="editPath1" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+                                                        <ColorAnimation To="White" Storyboard.TargetName="editPath2" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+                                                        <ColorAnimation To="White" Storyboard.TargetName="editPath3" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+                                                        <ColorAnimation To="White" Storyboard.TargetName="editPath4" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+                                                        <ColorAnimation To="White" Storyboard.TargetName="editPath5" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+                                                        <ColorAnimation To="White" Storyboard.TargetName="editPath6" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+                                                        <ColorAnimation To="White" Storyboard.TargetName="editPath7" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                            <EventTrigger RoutedEvent="Button.MouseLeave">
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ColorAnimation To="White" Storyboard.TargetName="editEllipsePanel" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+
+                                                        <ColorAnimation To="#4d80c1" Storyboard.TargetName="editPath1" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+                                                        <ColorAnimation To="#4d80c1" Storyboard.TargetName="editPath2" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+                                                        <ColorAnimation To="#4d80c1" Storyboard.TargetName="editPath3" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+                                                        <ColorAnimation To="#4d80c1" Storyboard.TargetName="editPath4" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+                                                        <ColorAnimation To="#4d80c1" Storyboard.TargetName="editPath5" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+                                                        <ColorAnimation To="#4d80c1" Storyboard.TargetName="editPath6" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+                                                        <ColorAnimation To="#4d80c1" Storyboard.TargetName="editPath7" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                        </Button.Triggers>
+
+                                        <Grid >
+                                            <Ellipse Fill="White" Name="editEllipsePanel" Width="40" Height="40" Stroke="{StaticResource ApplicationBrush}" />
+                                            <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                <Path Name="editPath1" Fill="#4d80c1" Data="M 1.7050373 14.542658 C 2.6760291 10.577015 12.189678 0.99056354 14.785726 1.3618691 15.896528 1.5207441 16.912905 2.5371212 17.07178 3.6479236 17.443086 6.243972 7.8566349 15.757621 3.8909926 16.728613 1.1024259 17.411397 1.0222538 17.331225 1.7050373 14.542658 Z m 4.0379841 -0.325636 c 0.3164309 -0.511996 0.1179885 -1.213553 -0.440983 -1.559017 -0.5589715 -0.345463 -1.0163119 0.07344 -1.0163119 0.930902 0 1.756526 0.600055 2.015159 1.4572949 0.628115 z m 5.6183916 -4.8190984 2.424313 -2.75 -2.746056 2.4206097 C 9.5293382 10.399869 7.9900639 11.185595 7.6190598 10.81459 7.2480558 10.443586 8.0337814 8.9043119 9.3651168 7.3939805 L 11.785726 4.6479236 9.0357265 7.0722376 C 6.114461 9.647534 5.412814 12.147924 7.6114125 12.147924 c 0.7291273 0 2.4166275 -1.2375 3.7500005 -2.7500004 z"/>
+                                                <Path Name="editPath2" Fill="#4d80c1" Data="m 1.2857265 16.724213 c 0 -4.382338 10.3176655 -16.04421552 13.6351085 -15.411524 3.655979 0.6972563 2.621556 4.1541737 -2.849055 9.52119 -4.5584578 4.472138 -10.7860535 7.873068 -10.7860535 5.890334 z m 5 -2.409622 c 0 -1.302074 -1.1887726 -2.168033 -2.1557921 -1.570382 -1.0342187 0.639182 -0.1424447 2.403715 1.2148091 2.403715 0.5175406 0 0.940983 -0.375 0.940983 -0.833333 z M 11.792043 9.141331 C 14.014651 6.8214271 14.40148 5.8636766 13.485726 4.9479236 12.569974 4.0321706 11.612223 4.4189984 9.2923191 6.6416074 6.1386371 9.6630266 5.3743094 12.147924 7.5986353 12.147924 c 0.7220998 0 2.6091327 -1.352967 4.1934077 -3.006593 z m -4.5063165 1.693684 c 0 -0.1721 1.4625 -1.6346 3.2499995 -3.2500002 l 3.25 -2.9370912 -2.937091 3.25 C 8.1108547 10.927379 7.2857265 11.607576 7.2857265 10.835015 Z M 15.826846 3.2144548 C 15.464312 2.6278626 14.689151 2.1479236 14.104264 2.1479236 c -0.663093 0 -0.58723 0.573782 0.201518 1.524166 1.371542 1.6526062 2.597333 1.283808 1.521064 -0.4576348 z"/>
+                                                <Path Name="editPath3" Fill="#4d80c1" Data="m 1.6787377 15.566137 c 0.3338438 -0.869984 0.6069888 -2.005038 0.6069888 -2.522344 0 -1.269573 7.9037515 -9.7739914 10.2512745 -11.0303477 1.910905 -1.02268507 4.748725 0.3393959 4.748725 2.2792661 0 1.7716068 -8.5620619 10.1765376 -11.7178809 11.5028336 -4.1187746 1.730997 -4.62981798 1.700852 -3.8891074 -0.229408 z M 5.7407196 12.897924 C 5.1858289 11.0613 5.3022706 10.877794 6.3745096 11.899102 7.436233 12.910393 8.3205591 12.537258 10.986904 9.9529345 15.556789 5.5236283 15.153458 3.9581638 10.535726 8.2017568 L 6.7857265 11.647924 10.231893 7.8979236 c 1.895392 -2.0625 3.001586 -3.75 2.458209 -3.75 -1.732478 0 -9.6652136 8.7689384 -8.9620231 9.9067244 1.2380905 2.003273 2.7115108 1.156454 2.0126407 -1.156724 z M 16.285726 4.2069406 c 0 -1.1798604 -1.950354 -2.4419959 -2.666667 -1.7256837 -0.716311 0.7163123 0.545824 2.6666667 1.725685 2.6666667 0.517541 0 0.940982 -0.4234424 0.940982 -0.940983 z"/>
+                                                <Path Name="editPath4" Fill="#4d80c1" Data="m 1.9907451 15.167933 c 0.4288658 -1.639986 0.826295 -1.823947 1.9412901 -0.898584 1.7339065 1.439015 2.6103124 0.710894 1.7724451 -1.472553 C 5.3589024 11.896234 4.5608101 11.440648 3.9309417 11.784382 3.3010733 12.128116 5.3676364 9.7735126 8.5233041 6.5519301 13.974553 0.98681739 14.347693 0.78131905 16.000446 2.4340727 17.6532 4.0868263 17.441727 4.4675211 11.76287 10.062586 5.1703923 16.557789 1.066629 18.701758 1.9907451 15.167933 Z M 14.285726 5.75559 c 0 -0.55 -1.6875 0.5507751 -3.75 2.4461668 L 6.7857265 11.647924 10.231893 7.8979236 C 14.475486 3.2801918 12.910021 2.8768617 8.4807156 7.4467459 5.9904124 10.016087 5.5492527 11.01145 6.4857265 11.947924 7.4222003 12.884398 8.4175633 12.443238 10.986904 9.9529345 12.801257 8.194395 14.285726 6.30559 14.285726 5.75559 Z m 2 -1.5486494 c 0 -1.1798604 -1.950354 -2.4419959 -2.666667 -1.7256837 -0.716311 0.7163123 0.545824 2.6666667 1.725685 2.6666667 0.517541 0 0.940982 -0.4234424 0.940982 -0.940983 z"/>
+                                                <Path Name="editPath5" Fill="#4d80c1" Data="m 2.0611818 14.898582 c 0.3548871 -1.35709 0.7248612 -1.559163 1.2623576 -0.689475 0.4181857 0.676638 1.5035257 0.945063 2.4118668 0.5965 1.3655357 -0.524005 1.426305 -0.877401 0.3509248 -2.040756 -0.7153325 -0.773854 -1.7076333 -1.159709 -2.205113 -0.857458 -0.4974797 0.302251 -0.5653048 7.05e-4 -0.1507226 -0.670103 0.5665704 -0.916731 1.2249856 -0.793222 2.6509772 0.497283 2.218366 2.007594 1.183373 3.935678 -2.4895678 4.637805 -1.9023735 0.363661 -2.240125 0.09176 -1.830723 -1.473796 z M 9.7857265 8.1479236 c 0.9954865 -1.1 2.0349745 -2 2.3099755 -2 0.274999 0 -0.31449 0.9 -1.309976 2 -0.9954858 1.1 -2.0349746 2.0000004 -2.3099746 2.0000004 -0.275 0 0.3144888 -0.9000004 1.3099751 -2.0000004 z M 13.035726 4.9812569 c -0.962499 -1.0083333 -1.3551 -1.8333333 -0.872444 -1.8333333 1.008568 0 3.605677 2.8921885 3.014945 3.3574993 -0.215875 0.1700421 -1.18 -0.5158326 -2.142501 -1.524166 z"/>
+                                                <Path Name="editPath6" Fill="#4d80c1" Data="m 2.3010393 14.397924 c 0.00874 -0.998683 0.3357262 -1.320676 0.7616336 -0.75 0.4104765 0.55 1.1535858 1.3375 1.6513539 1.75 0.4977682 0.4125 0.155033 0.75 -0.7616336 0.75 -0.9264684 0 -1.659866 -0.777208 -1.6513539 -1.75 z m 4.3207097 0 C 7.267288 13.331638 4.6559246 11.12683 3.7319567 11.958035 c -0.4217845 0.379439 -0.4250596 0.09807 -0.00728 -0.625254 0.6059175 -1.049059 1.139392 -0.971438 2.636744 0.383647 1.6305953 1.475669 1.805158 3.431496 0.3062699 3.431496 -0.275 0 -0.2956746 -0.3375 -0.045943 -0.75 z M 9.7857265 8.1479236 c 0.9954865 -1.1 2.0349745 -2 2.3099755 -2 0.274999 0 -0.31449 0.9 -1.309976 2 -0.9954858 1.1 -2.0349746 2.0000004 -2.3099746 2.0000004 -0.275 0 0.3144888 -0.9000004 1.3099751 -2.0000004 z"/>
+                                                <Path Name="editPath7" Fill="#4d80c1" Data="m 2.2857265 15.088907 c 0 -0.582459 0.45 -0.780902 1 -0.440983 0.55 0.339919 1 0.816476 1 1.059017 0 0.242541 -0.45 0.440983 -1 0.440983 -0.55 0 -1 -0.476558 -1 -1.059017 z"/>
+                                            </Grid>
+                                        </Grid>
+                                    </Button>
+
+                                </Grid>
+                            </Grid>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+    </Grid>
+</UserControl>

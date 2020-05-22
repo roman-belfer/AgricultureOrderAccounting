@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="OrderAccounting.Modules.Loader.Views.LoaderView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:OrderAccounting.Modules.Loader.Views"
+             xmlns:user_controls="clr-namespace:FMS.UI.Views.UserControls;assembly=FMS.UI">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/FMS.UI;component/Views/ModernUIStyles/BrushesDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="local:LoaderView.ShowView">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="MainGrid" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0:0.3" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="local:LoaderView.HideView">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="MainGrid" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0:0.3" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </UserControl.Triggers>
+
+    <Grid Name="MainGrid" Opacity="0">
+        <Grid.Style>
+            <Style TargetType="{x:Type Grid}">
+                <Style.Triggers>
+
+                    <Trigger Property="Opacity" Value="0">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </Trigger>
+                    <Trigger Property="Opacity" Value="1">
+                        <Setter Property="Visibility" Value="Visible"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
+
+        <Border Background="{StaticResource ApplicationBrush}" Opacity="0.8" />
+
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <user_controls:WhiteLoadingCircleControl VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <Label FontSize="14" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Зачекайте" />
+        </StackPanel>
+    </Grid>
+</UserControl>

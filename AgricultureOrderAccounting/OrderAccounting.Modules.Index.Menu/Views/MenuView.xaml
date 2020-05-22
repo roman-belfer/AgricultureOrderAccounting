@@ -1,0 +1,322 @@
+﻿<UserControl x:Class="OrderAccounting.Modules.Index.Menu.Views.MenuView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:OrderAccounting.Modules.Index.Menu.Views"
+             Name="wnd">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/FMS.UI;component/Views/ModernUIStyles/BrushesDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="{x:Type Button}" >
+                <Setter Property="ToolTipService.ShowOnDisabled" Value="False" />
+                <Setter Property="ToolTipService.IsEnabled" Value="True" />
+
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <ContentPresenter x:Name="ContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" />
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="True">
+                                    <Setter Property="Opacity" TargetName="ContentPresenter" Value="1"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" TargetName="ContentPresenter" Value="0.3"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="{x:Type RadioButton}" >
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type RadioButton}">
+                            <Border CornerRadius="6" Background="Transparent">
+                                <Grid Name="mainGrid" Opacity="1">
+                                    <ContentPresenter x:Name="ContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" />
+                                </Grid>
+                            </Border>
+                            <!--<ControlTemplate.Triggers>
+                                <EventTrigger RoutedEvent="RadioButton.MouseEnter">
+                                    <EventTrigger.Actions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetName="mainGrid" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.3" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger.Actions>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="RadioButton.MouseLeave">
+                                    <EventTrigger.Actions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetName="mainGrid" Storyboard.TargetProperty="Opacity" To="0.8" Duration="0:0:0.3" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger.Actions>
+                                </EventTrigger>
+                            </ControlTemplate.Triggers>-->
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="local:MenuView.FilterSet">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="filterCheckImage" Storyboard.TargetProperty="Width" To="16" Duration="0:0:0:0.4" />
+                    <DoubleAnimation Storyboard.TargetName="clearButton" Storyboard.TargetProperty="Width" To="30" Duration="0:0:0:0.4" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="local:MenuView.FilterUnset">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="filterCheckImage" Storyboard.TargetProperty="Width" To="0" Duration="0:0:0:0.4" />
+                    <DoubleAnimation Storyboard.TargetName="clearButton" Storyboard.TargetProperty="Width" To="0" Duration="0:0:0:0.4" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="local:MenuView.ShowFilter">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="blurEffect" Storyboard.TargetProperty="Radius" To="10" Duration="0:0:0:0.3" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="local:MenuView.HideFilter">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="blurEffect" Storyboard.TargetProperty="Radius" To="0" Duration="0:0:0:0.3" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </UserControl.Triggers>
+
+    <Grid Width="1050" Margin="0 15" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid.Effect>
+            <BlurEffect x:Name="blurEffect" Radius="0" />
+        </Grid.Effect>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" >
+
+            <Button Width="150" HorizontalAlignment="Center" Command="{Binding CreateCommand}">
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Button.MouseEnter">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetName="plusImage" Storyboard.TargetProperty="Width" To="12" Duration="0:0:0:0.2" />
+
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="Button.MouseLeave">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetName="plusImage" Storyboard.TargetProperty="Width" To="0" Duration="0:0:0:0.2" />
+
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Button.Triggers>
+                <Grid >
+                    <Border Width="150" Height="30" Background="#6aa84f" BorderBrush="#6aa84f" BorderThickness="1" />
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                        <Image Margin="0 2 7 0" VerticalAlignment="Center" Name="plusImage" Width="0" Source="pack://application:,,,/OrderAccounting.Modules.Index.Menu;component/Images/plus_white.png" />
+
+                        <TextBlock Text="Створити наряд" Foreground="White" />
+                    </StackPanel>
+                </Grid>
+            </Button>
+
+            <Button Width="150" HorizontalAlignment="Center" Command="{Binding FilterCommand}" >
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Button.MouseEnter">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation To="#1a8bdb" Storyboard.TargetName="contentBorder" Storyboard.TargetProperty="Background.Color" Duration="0:0:0:0.3"/>
+
+                                <ColorAnimation To="White" Storyboard.TargetName="contentText" Storyboard.TargetProperty="Foreground.Color" Duration="0:0:0:0.3"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="Button.MouseLeave">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation To="Transparent" Storyboard.TargetName="contentBorder" Storyboard.TargetProperty="Background.Color" Duration="0:0:0:0.3"/>
+
+                                <ColorAnimation To="#1a8bdb" Storyboard.TargetName="contentText" Storyboard.TargetProperty="Foreground.Color" Duration="0:0:0:0.3"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Button.Triggers>
+
+                <Grid>
+                    <Border Name="contentBorder" Width="150" Height="30" Background="Transparent" BorderBrush="#1a8bdb" BorderThickness="0 1 1 1" />
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                        <Image Name="filterCheckImage" Width="0" ToolTip="Фільтр встановлено" Source="pack://application:,,,/OrderAccounting.Modules.Index.Menu;component/Images/check_green.png" />
+
+                        <TextBlock Margin="10 5" Name="contentText" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Фільтрація" Foreground="#1a8bdb" />
+                    </StackPanel>
+                </Grid>
+            </Button>
+
+            <Button HorizontalAlignment="Center" Command="{Binding ClearFilterCommand}" ToolTip="Очистити фільтр">
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Button.MouseEnter">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation To="#f84f4f" Storyboard.TargetName="clearButton" Storyboard.TargetProperty="Background.Color" Duration="0:0:0:0.3"/>
+                                <ColorAnimation To="White" Storyboard.TargetName="clearPath1" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+                                <ColorAnimation To="White" Storyboard.TargetName="clearPath2" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+                                <ColorAnimation To="White" Storyboard.TargetName="clearPath3" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+                                <ColorAnimation To="White" Storyboard.TargetName="clearPath4" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+                                <ColorAnimation To="White" Storyboard.TargetName="clearPath5" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+                                <ColorAnimation To="White" Storyboard.TargetName="clearPath6" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="Button.MouseLeave">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation To="Transparent" Storyboard.TargetName="clearButton" Storyboard.TargetProperty="Background.Color" Duration="0:0:0:0.3"/>
+                                <ColorAnimation To="#f84f4f" Storyboard.TargetName="clearPath1" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+                                <ColorAnimation To="#f84f4f" Storyboard.TargetName="clearPath2" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+                                <ColorAnimation To="#f84f4f" Storyboard.TargetName="clearPath3" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+                                <ColorAnimation To="#f84f4f" Storyboard.TargetName="clearPath4" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+                                <ColorAnimation To="#f84f4f" Storyboard.TargetName="clearPath5" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+                                <ColorAnimation To="#f84f4f" Storyboard.TargetName="clearPath6" Storyboard.TargetProperty="Fill.Color" Duration="0:0:0:0.3"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Button.Triggers>
+
+                <Grid >
+                    <Border Name="clearButton" Width="0" Height="30" Background="Transparent" BorderBrush="#f84f4f" BorderThickness="0 1 1 1">
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" >
+                            <Grid.LayoutTransform>
+                                <ScaleTransform ScaleX="0.15" ScaleY="0.15"/>
+                            </Grid.LayoutTransform>
+
+                            <Path Name="clearPath1" Fill="#f84f4f" Data="m 0.32550722 62.405875 c -0.4331014 -1.128644 3.58725478 -5.800608 13.76844978 -16 L 28.47413 32 14.237065 17.737489 C 6.4066793 9.8931077 0 2.9039845 0 2.206104 0 1.5082235 0.71735628 0.66195497 1.5941251 0.32550722 2.7227692 -0.10759418 7.394733 3.912762 17.594125 14.093957 L 32 28.47413 46.405875 14.093957 C 56.605267 3.912762 61.277231 -0.10759418 62.405875 0.32550722 63.282644 0.66195497 64 1.5082235 64 2.206104 64 2.9039845 57.593321 9.8931077 49.762935 17.737489 L 35.52587 32 49.906043 46.405875 c 10.181195 10.199392 14.201551 14.871356 13.76845 16 C 63.338045 63.282644 62.491776 64 61.793896 64 61.096015 64 54.106892 57.593321 46.262511 49.762935 L 32 35.52587 17.737489 49.762935 C 9.8931077 57.593321 2.9039845 64 2.206104 64 1.5082235 64 0.66195497 63.282644 0.32550722 62.405875 Z"/>
+                            <Path Name="clearPath2" Fill="#f84f4f" Data="m 0.94796548 62.437302 c -1.11890381 -1.348196 0.68125302 -3.54441 13.11462052 -16 L 28.47413 32 14.01138 17.5114 C 0.27829303 3.7537681 -0.36373301 2.9351616 1.2857143 1.2857143 2.9351616 -0.36373301 3.7537681 0.27829303 17.5114 14.01138 L 32 28.47413 46.4886 14.01138 C 60.246232 0.27829303 61.064838 -0.36373301 62.714286 1.2857143 64.363733 2.9351616 63.721707 3.7537681 49.98862 17.5114 L 35.52587 32 49.98862 46.4886 C 63.721707 60.246232 64.363733 61.064838 62.714286 62.714286 61.064838 64.363733 60.246232 63.721707 46.4886 49.98862 L 32 35.52587 17.737489 49.762935 C 9.8931077 57.593321 3.1982078 64 2.8599336 64 2.5216593 64 1.6612737 63.296786 0.94796548 62.437302 Z"/>
+                            <Path Name="clearPath3" Fill="#f84f4f" Data="M 1.2 62.8 C 0.21618464 61.816185 2.9905981 58.528622 14.718566 46.781069 L 29.474993 32 14.718566 17.218931 C 2.9905981 5.4713784 0.21618464 2.1838154 1.2 1.2 2.1838154 0.21618464 5.4713784 2.9905981 17.218931 14.718566 L 32 29.474993 46.781069 14.718566 C 58.528622 2.9905981 61.816185 0.21618464 62.8 1.2 63.783815 2.1838154 61.009402 5.4713784 49.281434 17.218931 L 34.525007 32 49.281434 46.781069 C 61.009402 58.528622 63.783815 61.816185 62.8 62.8 61.816185 63.783815 58.528622 61.009402 46.781069 49.281434 L 32 34.525007 17.218931 49.281434 C 5.4713784 61.009402 2.1838154 63.783815 1.2 62.8 Z"/>
+                            <Path Name="clearPath4" Fill="#f84f4f" Data="m 1 61.762511 c 0 -0.680619 6.4066793 -7.655619 14.237065 -15.5 L 29.47413 32 15.237065 17.737489 C 1.8577038 4.3342145 -0.73189465 1 2.2374888 1 2.9181077 1 9.8931077 7.4066793 17.737489 15.237065 L 32 29.47413 46.262511 15.237065 C 59.665785 1.8577038 63 -0.73189465 63 2.2374888 63 2.9181077 56.593321 9.8931077 48.762935 17.737489 L 34.52587 32 48.762935 46.262511 C 56.593321 54.106892 63 61.081892 63 61.762511 63 64.731895 59.665785 62.142296 46.262511 48.762935 L 32 34.52587 17.737489 48.762935 C 4.3342145 62.142296 1 64.731895 1 61.762511 Z"/>
+                            <Path Name="clearPath5" Fill="#f84f4f" Data="m 1.4319166 61.889839 c -0.3979156 -0.643841 5.3475122 -7.154575 13.6780484 -15.5 L 29.47413 32 15.018516 17.518549 C 3.5344292 6.0139367 0.81720237 2.7827976 1.8 1.8 2.7827976 0.81720237 6.0139367 3.5344292 17.518549 15.018516 L 32 29.47413 46.481451 15.018516 C 57.986063 3.5344292 61.217202 0.81720237 62.2 1.8 63.182798 2.7827976 60.465571 6.0139367 48.981484 17.518549 L 34.52587 32 48.981484 46.481451 C 60.465571 57.986063 63.182798 61.217202 62.2 62.2 61.217202 63.182798 57.986063 60.465571 46.481451 48.981484 L 32 34.52587 17.737489 48.762935 C 9.8931077 56.593321 3.1696653 63 2.7965058 63 2.4233463 63 1.8092812 62.500427 1.4319166 61.889839 Z"/>
+                            <Path Name="clearPath6" Fill="#f84f4f" Data="M 1.6666667 62.333333 C 1.2608581 61.927525 7.576719 54.936512 15.701913 46.79775 L 30.474993 32 15.701913 17.20225 C 7.576719 9.0634878 1.2608581 2.0724752 1.6666667 1.6666667 2.0724752 1.2608581 9.0634878 7.576719 17.20225 15.701913 L 32 30.474993 46.79775 15.701913 C 54.936512 7.576719 61.927525 1.2608581 62.333333 1.6666667 62.739142 2.0724752 56.423281 9.0634878 48.298087 17.20225 L 33.525007 32 48.298087 46.79775 C 56.423281 54.936512 62.739142 61.927525 62.333333 62.333333 61.927525 62.739142 54.936512 56.423281 46.79775 48.298087 L 32 33.525007 17.20225 48.298087 C 9.0634878 56.423281 2.0724752 62.739142 1.6666667 62.333333 Z"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Button>
+
+        </StackPanel>
+
+        <ItemsControl Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" ItemsSource="{Binding DirectoryManager.LaborStatus}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate >
+                    <WrapPanel HorizontalAlignment="Center" Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <RadioButton Margin="10 0 0 0" GroupName="StateGroup" Command="{Binding Path=DataContext.OperationStateCommand, ElementName=wnd}" CommandParameter="{Binding Name}">
+                        <RadioButton.Triggers>
+                            <EventTrigger RoutedEvent="RadioButton.Checked">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="checkImage" Storyboard.TargetProperty="Width" To="12" Duration="0:0:0:0.2" />
+                                        <DoubleAnimation Storyboard.TargetName="borderPanel" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0:0.2" />
+                                        <DoubleAnimation Storyboard.TargetName="textLabel" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0:0.2" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="RadioButton.Unchecked">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="checkImage" Storyboard.TargetProperty="Width" To="0" Duration="0:0:0:0.2" />
+                                        <DoubleAnimation Storyboard.TargetName="borderPanel" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0:0.2" />
+                                        <DoubleAnimation Storyboard.TargetName="textLabel" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0:0.2" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </RadioButton.Triggers>
+                        <Border MinWidth="100" Height="30" Background="Transparent" BorderBrush="#6aa84f" BorderThickness="1" CornerRadius="0">
+                            <Grid>
+                                <Border Name="borderPanel" Opacity="0" Background="#6aa84f" CornerRadius="0" />
+                                <StackPanel Margin="10 0"  HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                                    <Image Name="checkImage" Width="0" Source="pack://application:,,,/OrderAccounting.Modules.Index.Menu;component/Images/check_white.png" />
+                                    <Grid>
+                                        <Label Content="{Binding DisplayName}" Foreground="#6aa84f" />
+                                        <Label Name="textLabel" Content="{Binding DisplayName}" Foreground="White" Opacity="0" />
+                                    </Grid>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </RadioButton>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <ItemsControl Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" ItemsSource="{Binding OperationTypesDataSource}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate >
+                    <WrapPanel HorizontalAlignment="Center" Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <RadioButton Margin="10 0 0 0" GroupName="TypeGroup" Command="{Binding Path=DataContext.OperationTypeCommand, ElementName=wnd}" CommandParameter="{Binding Id}">
+                        <RadioButton.Triggers>
+                            <EventTrigger RoutedEvent="RadioButton.Checked">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="checkImage" Storyboard.TargetProperty="Width" To="12" Duration="0:0:0:0.2" />
+                                        <DoubleAnimation Storyboard.TargetName="borderPanel" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0:0.2" />
+                                        <DoubleAnimation Storyboard.TargetName="textLabel" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0:0.2" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="RadioButton.Unchecked">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="checkImage" Storyboard.TargetProperty="Width" To="0" Duration="0:0:0:0.2" />
+                                        <DoubleAnimation Storyboard.TargetName="borderPanel" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0:0.2" />
+                                        <DoubleAnimation Storyboard.TargetName="textLabel" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0:0.2" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </RadioButton.Triggers>
+                        <Border MinWidth="105" Background="Transparent" Height="30" BorderBrush="#477dc6" BorderThickness="1" CornerRadius="0">
+                            <Grid>
+                                <Border Name="borderPanel" Opacity="0" Background="#477dc6" CornerRadius="0" />
+                                <StackPanel Margin="10 0"  HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                                    <Image Name="checkImage" Width="0" Source="pack://application:,,,/OrderAccounting.Modules.Index.Menu;component/Images/check_white.png" />
+                                    <Grid>
+                                        <Label Content="{Binding Value}" Foreground="#477dc6" />
+                                        <Label Name="textLabel" Content="{Binding Value}" Foreground="White" Opacity="0" />
+                                    </Grid>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </RadioButton>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+
+</UserControl>
